@@ -1,106 +1,73 @@
-/* 全站基礎設定：深焦糖奶茶背景 */
+/* --- 核心背景設定：焦糖色 + 大顆動態雪花 --- */
 body {
-    background-color: #8B5E3C; /* <-- 深一點的焦糖奶茶色 */
-    background-image: radial-gradient(#FDFBF7 1px, transparent 1px), radial-gradient(#FDFBF7 1px, transparent 1px);
-    background-size: 40px 40px;
-    background-position: 0 0, 20px 20px;
-    color: #FDFBF7;            /* 網頁大標題改成奶油白 */
+    background-color: #8B5E3C; /* 深焦糖奶茶底色 */
+    color: #FDFBF7;            /* 奶油白文字 */
     font-family: 'Helvetica Neue', Arial, sans-serif;
     text-align: center;
     margin: 0;
     padding: 20px;
-    color: #FDFBF7;
-}
-
-h1 {
-    margin-bottom: 30px;
-    letter-spacing: 1px;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.2); /* 讓標題有一點立體感 */
-}
-
-/* 畫廊容器 */
-.gallery {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
-    padding: 10px;
-}
-
-/* 卡片本體：改成奶油雪白色 */
-.card {
-    background-color: #FDFBF7; /* <-- 你指定的雪白色 */
-    border-radius: 12px;
-    overflow: hidden;
-    width: 300px;
-    text-align: left;
-    box-shadow: 0 4px 15px rgba(60, 40, 20, 0.3); /* 陰影改成暖棕色調 */
-    transition: transform 0.2s;
-}
-
-.card:hover {
-    transform: translateY(-5px);
-}
-
-/* --- 輪播圖樣式 --- */
-.slideshow-container {
+    overflow-x: hidden;
     position: relative;
-    width: 100%;
-    height: 300px;
-    background-color: #DCC6AC; /* 圖片載入前的底色改成淺奶茶色 */
 }
 
-.slide-img {
+body::before, body::after {
+    content: "";
     position: absolute;
-    top: 0;
+    top: -100%;
     left: 0;
     width: 100%;
-    height: 100%;
-    object-fit: cover;
-    opacity: 0;
-    transition: opacity 0.8s ease-in-out;
+    height: 200%;
+    pointer-events: none;
+    /* --- 關鍵修改：把這裡的 px 數字都加大！ --- */
+    background-image: 
+        radial-gradient(6px 6px at 10% 10%, #FDFBF7 50%, transparent 50%),
+        radial-gradient(4px 4px at 20% 30%, #FDFBF7 50%, transparent 50%),
+        radial-gradient(8px 8px at 30% 50%, #FDFBF7 50%, transparent 50%),
+        radial-gradient(5px 5px at 40% 70%, #FDFBF7 50%, transparent 50%),
+        radial-gradient(7px 7px at 50% 90%, #FDFBF7 50%, transparent 50%),
+        radial-gradient(4px 4px at 60% 10%, #FDFBF7 50%, transparent 50%),
+        radial-gradient(8px 8px at 70% 30%, #FDFBF7 50%, transparent 50%),
+        radial-gradient(5px 5px at 80% 50%, #FDFBF7 50%, transparent 50%),
+        radial-gradient(6px 6px at 90% 70%, #FDFBF7 50%, transparent 50%),
+        radial-gradient(4px 4px at 15% 85%, #FDFBF7 50%, transparent 50%),
+        radial-gradient(7px 7px at 35% 25%, #FDFBF7 50%, transparent 50%),
+        radial-gradient(5px 5px at 55% 45%, #FDFBF7 50%, transparent 50%),
+        radial-gradient(8px 8px at 75% 65%, #FDFBF7 50%, transparent 50%),
+        radial-gradient(4px 4px at 95% 5%, #FDFBF7 50%, transparent 50%);
+    background-size: 500px 500px; /* 稍微拉大間距，避免太擁擠 */
+    animation-name: snow;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
 }
 
-.slide-img.active {
-    opacity: 1;
+/* 第一層雪花：慢速 */
+body::before {
+    animation-duration: 20s;
+    opacity: 0.7; /* 稍微調高不透明度，更明顯 */
 }
 
-/* 卡片內容區 */
-.card-content {
-    padding: 15px;
+/* 第二層雪花：快速 */
+body::after {
+    background-size: 600px 600px;
+    animation-duration: 12s;
+    opacity: 0.9; /* 更明顯 */
 }
 
-/* 暱稱：改成焦糖紅棕色，對比奶油白更清楚 */
-.nickname {
-    color: #A0522D; /* <-- 焦糖肉桂色 */
-    font-weight: bold;
-    font-size: 1.1em;
-    margin-bottom: 5px;
-    display: flex;
-    align-items: center;
+@keyframes snow {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(500px); } /* 讓它飄得更遠一點 */
 }
 
-/* 留言內容：改成深咖啡色 (因為底色變白了) */
-.message {
-    color: #5D4037; /* <-- 深咖啡色 */
-    font-size: 0.95em;
-    margin-bottom: 10px;
-    line-height: 1.4;
-}
-
-/* 時間戳記：改成淺棕色 */
-.timestamp {
-    color: #8D6E63; /* <-- 淺可可色 */
-    font-size: 0.8em;
-}
-
-/* 照片數量小標籤 */
-.badge {
-    background-color: #D7CCC8; /* 淺拿鐵色底 */
-    color: #5D4037;            /* 深咖啡字 */
-    font-size: 0.7em;
-    padding: 2px 8px;
-    border-radius: 10px;
-    margin-left: 8px;
-    border: 1px solid #A1887F;
-}
+/* --- 以下保持不變 --- */
+h1 { margin-bottom: 30px; letter-spacing: 1px; text-shadow: 2px 2px 4px rgba(0,0,0,0.2); }
+.gallery { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; padding: 10px; }
+.card { background-color: #FDFBF7; border-radius: 12px; overflow: hidden; width: 300px; text-align: left; box-shadow: 0 4px 15px rgba(60, 40, 20, 0.3); transition: transform 0.2s; z-index: 1; }
+.card:hover { transform: translateY(-5px); }
+.slideshow-container { position: relative; width: 100%; height: 300px; background-color: #DCC6AC; }
+.slide-img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.8s ease-in-out; }
+.slide-img.active { opacity: 1; }
+.card-content { padding: 15px; }
+.nickname { color: #A0522D; font-weight: bold; font-size: 1.1em; margin-bottom: 5px; display: flex; align-items: center; }
+.message { color: #5D4037; font-size: 0.95em; margin-bottom: 10px; line-height: 1.4; }
+.timestamp { color: #8D6E63; font-size: 0.8em; }
+.badge { background-color: #D7CCC8; color: #5D4037; font-size: 0.7em; padding: 2px 8px; border-radius: 10px; margin-left: 8px; border: 1px solid #A1887F; }
