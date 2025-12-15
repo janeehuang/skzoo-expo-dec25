@@ -1,66 +1,38 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SKZOO Flask 展覽牆</title>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;500;700&display=swap" rel="stylesheet">
-  <style>
-    /* 這裡延續之前的黑色系風格，保持不變 */
-    :root { --bg-color: #121212; --card-bg: #1e1e1e; --accent: #ff0055; --text-main: #ffffff; }
-    body { background-color: var(--bg-color); color: var(--text-main); font-family: 'Noto Sans TC', sans-serif; padding: 20px; }
-    .gallery-container { column-count: 1; column-gap: 20px; max-width: 1200px; margin: 0 auto; }
-    @media (min-width: 768px) { .gallery-container { column-count: 2; } }
-    @media (min-width: 1024px) { .gallery-container { column-count: 3; } }
-    .card { background: var(--card-bg); border-radius: 12px; margin-bottom: 20px; break-inside: avoid; overflow: hidden; animation: fadeIn 0.5s ease; }
-    .card img { width: 100%; display: block; }
-    .card-content { padding: 15px; }
-    .nickname { color: var(--accent); font-weight: bold; display: block; margin-bottom: 5px; }
-    .message { color: #ddd; white-space: pre-wrap; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STAY Flask Gallery</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-  <h1 style="text-align: center; margin-bottom: 30px;">STAY Flask Gallery</h1>
-  <div id="loading" style="text-align: center;">正在呼叫 Flask 大廚準備資料...</div>
-  <div class="gallery-container" id="gallery"></div>
+    <h1>STAY Flask Gallery</h1>
 
-  <script>
-    // 🚀 重點來了！我們不再直接連 Firebase
-    // 而是用 fetch 去問我們剛剛寫的 Flask API (/api/posts)
-    
-    fetch('/api/posts')
-      .then(response => response.json()) // 把大廚給的資料轉成 JSON
-      .then(data => {
-        const gallery = document.getElementById("gallery");
-        document.getElementById("loading").style.display = "none";
-
-        data.forEach(post => {
-          const card = document.createElement("div");
-          card.className = "card";
-          
-          // 處理時間顯示
-          let timeStr = "";
-          if(post.timestamp) {
-             // 如果 timestamp 是字串就直接用，如果是物件再轉換
-             timeStr = new Date(post.timestamp).toLocaleString('zh-TW');
-          }
-
-          card.innerHTML = `
-            <img src="${post.photo_url}" loading="lazy">
-            <div class="card-content">
-              <span class="nickname">@${post.nickname}</span>
-              <div class="message">${post.message}</div>
-              <small style="color: #666; font-size: 0.8em;">${timeStr}</small>
+    <div class="gallery">
+        {% for nickname, user_posts in grouped_posts.items() %}
+        <div class="card">
+            
+            <div class="slideshow-container">
+                {% for post in user_posts %}
+                    <img src="{{ post.photo_url }}" class="slide-img {% if loop.first %}active{% endif %}" alt="Photo by {{ nickname }}">
+                {% endfor %}
             </div>
-          `;
-          gallery.appendChild(card);
-        });
-      })
-      .catch(err => {
-        console.error("發生錯誤:", err);
-        document.getElementById("loading").innerText = "連線失敗，請檢查 Flask 有沒有跑起來";
-      });
-  </script>
+
+            <div class="card-content">
+                <div class="nickname">
+                    @{{ nickname }}
+                    {% if user_posts|length > 1 %}
+                    <span class="badge">{{ user_posts|length }} photos</span>
+                    {% endif %}
+                </div>
+                <div class="message">{{ user_posts[0].message }}</div>
+                <div class="timestamp">{{ user_posts[0].timestamp }}</div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
