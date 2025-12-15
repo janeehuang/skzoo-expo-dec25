@@ -1,6 +1,12 @@
-/* --- 核心背景設定：焦糖色 + 大顆動態雪花 --- */
+/* --- 核心背景設定：漸層色 + 大顆動態雪花 --- */
 body {
-    background-color: #8B5E3C; /* 深焦糖奶茶底色 */
+    /* ✨ 這裡改成漸層色 ✨ */
+    /* linear-gradient(方向, 上面的顏色, 下面的顏色) */
+    background: linear-gradient(to bottom, #D9C5B2, #9E7E56);
+    
+    /* 讓漸層背景固定住，不會因為網頁變長而重複切斷 */
+    background-attachment: fixed; 
+    
     color: #FDFBF7;            /* 奶油白文字 */
     font-family: 'Helvetica Neue', Arial, sans-serif;
     text-align: center;
@@ -8,9 +14,10 @@ body {
     padding: 20px;
     overflow-x: hidden;
     position: relative;
+    min-height: 100vh; /* 確保背景至少填滿整個螢幕高度 */
 }
 
-/* --- 雪花動畫區塊 (改回這裡) --- */
+/* --- 雪花動畫區塊 (維持不變) --- */
 body::before, body::after {
     content: "";
     position: absolute;
@@ -38,7 +45,7 @@ body::before, body::after {
     animation-name: snow;
     animation-timing-function: linear;
     animation-iteration-count: infinite;
-    z-index: 0; /* 確保雪花在最底層 */
+    z-index: 0;
 }
 
 body::before {
@@ -61,7 +68,7 @@ h1 {
     margin-bottom: 30px; 
     letter-spacing: 1px; 
     text-shadow: 2px 2px 4px rgba(0,0,0,0.2); 
-    position: relative; z-index: 1; /* 確保文字浮在雪花上 */
+    position: relative; z-index: 1; 
 }
 
 /* --- 畫廊容器 --- */
@@ -71,16 +78,15 @@ h1 {
     justify-content: center;
     gap: 20px;
     padding: 10px;
-    position: relative; z-index: 1; /* 確保卡片浮在雪花上 */
+    position: relative; z-index: 1;
 }
 
-/* --- 卡片與圖片設定 (維持完整比例) --- */
+/* --- 卡片與圖片設定 (維持圖片完整比例) --- */
 .card {
     background-color: #FDFBF7;
     border-radius: 12px;
     overflow: hidden;
-    width: 300px; /* 寬度固定 */
-    /* 高度自動，隨圖片變化 */
+    width: 300px;
     display: flex;
     flex-direction: column;
     text-align: left;
@@ -93,19 +99,18 @@ h1 {
 .slideshow-container {
     position: relative;
     width: 100%;
-    /* 移除固定高度，讓它隨圖片長高 */
     background-color: transparent;
     min-height: 50px;
 }
 
 .slide-img {
     width: 100%;
-    height: auto;     /* 關鍵：高度自動，保持比例 */
-    display: none;    /* 平常隱藏 */
+    height: auto;     /* 高度自動，保持比例 */
+    display: none;
 }
 
 .slide-img.active {
-    display: block;   /* 顯示時撐開卡片 */
+    display: block;
 }
 
 .card-content { padding: 15px; flex-grow: 1; }
