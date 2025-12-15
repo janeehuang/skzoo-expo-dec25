@@ -1,8 +1,8 @@
 /* --- 1. 核心背景：漸層拿鐵色 + 大雪紛飛 --- */
 body {
-    background: linear-gradient(to bottom, #D9C5B2, #9E7E56); /* 漸層背景 */
+    background: linear-gradient(to bottom, #D9C5B2, #9E7E56);
     background-attachment: fixed; 
-    color: #FDFBF7;            /* 奶油白文字 */
+    color: #FDFBF7;
     font-family: 'Helvetica Neue', Arial, sans-serif;
     text-align: center;
     margin: 0;
@@ -12,7 +12,7 @@ body {
     min-height: 100vh;
 }
 
-/* --- 雪花動畫設定 --- */
+/* --- 雪花動畫 --- */
 body::before, body::after {
     content: "";
     position: absolute;
@@ -58,7 +58,7 @@ h1 {
     position: relative; z-index: 1; 
 }
 
-/* --- 2. 問卷按鈕樣式 (這就是剛剛加的新東西) --- */
+/* --- 2. 問卷按鈕 --- */
 .survey-btn {
     display: inline-block;
     background-color: #A0522D;
@@ -71,7 +71,7 @@ h1 {
     font-size: 1.1em;
     box-shadow: 0 4px 10px rgba(0,0,0,0.3);
     transition: all 0.3s ease;
-    position: relative; z-index: 2; /* 浮在雪花上 */
+    position: relative; z-index: 2;
 }
 
 .survey-btn:hover {
@@ -80,50 +80,59 @@ h1 {
     box-shadow: 0 6px 15px rgba(0,0,0,0.4);
 }
 
-/* --- 3. 畫廊與卡片設定 --- */
+/* --- 3. 瀑布流畫廊 (關鍵修改！) --- */
 .gallery {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
+    /* 移除 flex，改用 column 佈局 */
+    /* display: flex; */
+    
+    /* 設定每列大概 300px 寬，螢幕大就會自動多幾列 */
+    column-width: 300px; 
+    column-gap: 20px;    /* 列之間的縫隙 */
+    
     padding: 10px;
     position: relative; z-index: 1;
+    max-width: 1400px;   /* 限制最大寬度，避免在大螢幕太散 */
+    margin: 0 auto;      /* 置中 */
+    text-align: left;    /* 讓卡片內容靠左 */
 }
 
+/* --- 4. 卡片設定 --- */
 .card {
     background-color: #FDFBF7;
     border-radius: 12px;
     overflow: hidden;
-    width: 300px;
-    display: flex;
-    flex-direction: column;
-    text-align: left;
+    
+    /* 關鍵：讓卡片變成一塊完整的磚塊，不會被切斷 */
+    display: inline-block; 
+    width: 100%; 
+    margin-bottom: 20px; /* 卡片上下的縫隙 */
+    break-inside: avoid; /* 禁止卡片被分頁切斷 */
+    
     box-shadow: 0 4px 15px rgba(60, 40, 20, 0.3);
     transition: transform 0.2s;
 }
 
 .card:hover { transform: translateY(-5px); }
 
-/* --- 輪播與圖片 (保持完整比例) --- */
+/* --- 輪播與圖片 --- */
 .slideshow-container {
     position: relative;
     width: 100%;
     background-color: transparent;
-    min-height: 50px;
+    min-height: 0;
 }
 
 .slide-img {
     width: 100%;
-    height: auto;     /* 高度自動 */
-    display: none;    /* 預設隱藏 */
+    height: auto;
+    display: none;
+    vertical-align: bottom;
 }
 
-.slide-img.active {
-    display: block;   /* 顯示 */
-}
+.slide-img.active { display: block; }
 
-/* --- 卡片文字內容 --- */
-.card-content { padding: 15px; flex-grow: 1; }
+/* --- 卡片內容 --- */
+.card-content { padding: 15px; }
 .nickname { color: #A0522D; font-weight: bold; font-size: 1.1em; margin-bottom: 5px; display: flex; align-items: center; }
 .message { color: #5D4037; font-size: 0.95em; margin-bottom: 10px; line-height: 1.4; word-wrap: break-word; }
 .timestamp { color: #8D6E63; font-size: 0.8em; }
