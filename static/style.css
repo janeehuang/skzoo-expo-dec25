@@ -1,9 +1,12 @@
-/* --- 1. 核心背景：漸層拿鐵色 + 大雪紛飛 (維持不變) --- */
+/* --- 1. 核心背景：漸層拿鐵色 + 大雪紛飛 --- */
 body {
     background: linear-gradient(to bottom, #D9C5B2, #9E7E56);
     background-attachment: fixed; 
     color: #FDFBF7;
-    font-family: 'Helvetica Neue', 'Comic Sans MS', Arial, sans-serif; /* 加個可愛一點的字體 */
+    
+    /* ✨ 保留你喜歡的可愛字體 ✨ */
+    font-family: 'Comic Sans MS', '微軟正黑體', 'Helvetica Neue', Arial, sans-serif;
+    
     text-align: center;
     margin: 0;
     padding: 20px;
@@ -77,77 +80,44 @@ h1 {
     box-shadow: 0 6px 15px rgba(0,0,0,0.4);
 }
 
-/* --- 3. 瀑布流畫廊 --- */
+/* --- 3. 瀑布流畫廊 (無縫版) --- */
 .gallery {
-    /* 稍微縮小一點欄寬，讓卡片看起來更像小紙條 */
-    column-width: 260px; 
-    column-gap: 25px;    /* 加大一點間距，讓歪斜時不會撞在一起 */
+    /* 設定直向欄位佈局 */
+    column-width: 300px; 
+    column-gap: 20px;
     
-    padding: 20px;
+    padding: 10px;
     position: relative; z-index: 1;
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
     text-align: left;
 }
 
-/* --- 4. 卡片設定 (便利貼化！) --- */
+/* --- 4. 卡片設定 (直立、整齊) --- */
 .card {
-    background-color: #FDFBF7; /* 保持奶油白，像紙張一樣 */
-    border-radius: 2px; /* 圓角變小，比較像裁切的紙張 */
+    background-color: #FDFBF7;
+    border-radius: 12px; /* 改回原本漂亮的圓角 */
+    overflow: hidden;
     
+    /* 讓卡片在瀑布流中不斷裂 */
     display: inline-block; 
     width: 100%; 
-    margin-bottom: 30px; /* 加大下方間距 */
+    margin-bottom: 20px;
     break-inside: avoid;
     
-    /* 修改陰影：讓它看起來浮起來，像貼在牆上 */
-    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
-    
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    position: relative; /* 為了讓 hover 效果能蓋過其他張 */
+    /* 移除歪斜設定，改回乾淨的陰影 */
+    box-shadow: 0 4px 15px rgba(60, 40, 20, 0.3);
+    transition: transform 0.2s;
 }
 
-/* ✨ 關鍵魔法：利用 nth-child 製造不規則感 ✨ */
+.card:hover { transform: translateY(-5px); }
 
-/* 奇數張：往右歪一點，往下掉一點 */
-.card:nth-child(odd) {
-    transform: rotate(1.5deg) translateY(5px);
-}
-
-/* 偶數張：往左歪一點，往上提一點 */
-.card:nth-child(even) {
-    transform: rotate(-2deg) translateY(-5px);
-    margin-left: 5px; /* 稍微錯位 */
-}
-
-/* 每 3 張出現一次：歪多一點 */
-.card:nth-child(3n) {
-    transform: rotate(3deg);
-    box-shadow: 5px 5px 15px rgba(0,0,0,0.25); /* 這張貼得比較高 */
-}
-
-/* 每 5 張出現一次：往反方向歪，製造層次 */
-.card:nth-child(5n) {
-    transform: rotate(-3.5deg);
-    z-index: 2; /* 讓它稍微疊在別人上面 */
-}
-
-
-/* 滑鼠移上去時：擺正並浮起來，像是拿起來看 */
-.card:hover {
-    transform: rotate(0deg) scale(1.05) !important; /* !important 確保覆蓋掉上面的歪斜設定 */
-    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-    z-index: 10; /* 確保拿到最上層 */
-    cursor: pointer;
-}
-
-/* --- 輪播與圖片 (維持不變) --- */
+/* --- 輪播與圖片 --- */
 .slideshow-container {
     position: relative;
     width: 100%;
     background-color: transparent;
     min-height: 0;
-    border-bottom: 1px solid #eee; /* 加個淡淡的分隔線 */
 }
 .slide-img { width: 100%; height: auto; display: none; vertical-align: bottom; }
 .slide-img.active { display: block; }
@@ -155,7 +125,8 @@ h1 {
 /* --- 卡片內容 --- */
 .card-content { 
     padding: 15px; 
-    font-family: 'Comic Sans MS', '微軟正黑體', sans-serif; /* 內容也換個可愛字體 */
+    /* 確保內容也是用可愛字體 */
+    font-family: 'Comic Sans MS', '微軟正黑體', sans-serif;
 }
 .nickname { color: #A0522D; font-weight: bold; font-size: 1.1em; margin-bottom: 5px; display: flex; align-items: center; }
 .message { color: #5D4037; font-size: 0.95em; margin-bottom: 10px; line-height: 1.4; word-wrap: break-word; }
