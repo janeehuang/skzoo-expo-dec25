@@ -1,21 +1,34 @@
-/* --- 1. 核心背景：漸層拿鐵色 + 大雪紛飛 --- */
+/* =========================================
+   1. 核心背景與基礎設定
+   ========================================= */
 body {
+    /* 漸層拿鐵色背景 */
     background: linear-gradient(to bottom, #D9C5B2, #9E7E56);
-    background-attachment: fixed; 
+    background-attachment: fixed;
     color: #FDFBF7;
     
-    /* ✨ 保留你喜歡的可愛字體 ✨ */
+    /* 可愛字體設定 */
     font-family: 'Comic Sans MS', '微軟正黑體', 'Helvetica Neue', Arial, sans-serif;
     
     text-align: center;
     margin: 0;
     padding: 20px;
-    overflow-x: hidden;
-    position: relative;
+    overflow-x: hidden; /* 隱藏水平卷軸 */
     min-height: 100vh;
+    position: relative;
 }
 
-/* --- 雪花動畫 (維持不變) --- */
+h1 {
+    margin-bottom: 30px;
+    letter-spacing: 1px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    position: relative;
+    z-index: 1;
+}
+
+/* =========================================
+   ❄️ 雪花動畫特效
+   ========================================= */
 body::before, body::after {
     content: "";
     position: absolute;
@@ -23,7 +36,7 @@ body::before, body::after {
     left: 0;
     width: 100%;
     height: 200%;
-    pointer-events: none;
+    pointer-events: none; /* 讓點擊穿透雪花 */
     background-image: 
         radial-gradient(6px 6px at 10% 10%, #FDFBF7 50%, transparent 50%),
         radial-gradient(4px 4px at 20% 30%, #FDFBF7 50%, transparent 50%),
@@ -43,109 +56,329 @@ body::before, body::after {
     animation-name: snow;
     animation-timing-function: linear;
     animation-iteration-count: infinite;
-    z-index: 0;
+    z-index: 0; /* 在背景層 */
 }
 body::before { animation-duration: 20s; opacity: 0.7; }
 body::after { background-size: 600px 600px; animation-duration: 12s; opacity: 0.9; }
+
 @keyframes snow {
     0% { transform: translateY(0); }
     100% { transform: translateY(500px); }
 }
 
-h1 { 
-    margin-bottom: 30px; 
-    letter-spacing: 1px; 
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.2); 
-    position: relative; z-index: 1; 
-}
+/* =========================================
+   🔘 按鈕樣式 (問卷與返回)
+   ========================================= */
 
-/* --- 2. 問卷按鈕 (維持不變) --- */
-.survey-btn {
-    display: inline-block;
-    background-color: #A0522D;
+.button-group {
+    text-align: center;
+    margin-bottom: 30px;
+    position: relative; 
+    z-index: 2;
+}
+.survey-btn, .timeline-btn, .back-btn {
+display: inline-block;
+    background-color: #A0522D; /* 原本的拿鐵棕色 */
     color: #ffffff;
     padding: 12px 25px;
-    margin-bottom: 30px;
+    
+    /* 這裡重要：左右各給 10px 間距，讓按鈕分開 */
+    margin: 0 10px; 
+    
     border-radius: 50px;
     text-decoration: none;
     font-weight: bold;
     font-size: 1.1em;
     box-shadow: 0 4px 10px rgba(0,0,0,0.3);
     transition: all 0.3s ease;
-    position: relative; z-index: 2;
+    cursor: pointer;
 }
-.survey-btn:hover {
-    background-color: #8B4513;
+
+
+.survey-btn:hover, .timeline-btn:hover {
+    background-color: #8B4513; /* 深一點的顏色 */
     transform: translateY(-3px);
     box-shadow: 0 6px 15px rgba(0,0,0,0.4);
 }
 
-/* --- 3. 瀑布流畫廊 (無縫版) --- */
+/* --- (選用) 如果你想讓「時間線」按鈕顏色稍微深一點 --- */
+/* 如果想要兩顆顏色一模一樣，下面這段可以不用加 */
+.timeline-btn {
+    background-color: #6D4C41; /* 深咖啡色 */
+}
+.timeline-btn:hover {
+    background-color: #4E342E; /* 更深的咖啡色 */
+}
+
+/* =========================================
+   3. 留言牆佈局 (修改為：橫向新增排列)
+   ========================================= */
+
 .gallery {
-    /* 設定直向欄位佈局 */
-    column-width: 300px; 
-    column-gap: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    
+    /* ✨ 關鍵修改：加入這行！ */
+    /* 讓卡片高度「依內容多寡決定」，不要自動拉長補滿 */
+    align-items: start;
     
     padding: 10px;
-    position: relative; z-index: 1;
+    position: relative; 
+    z-index: 1;
     max-width: 1400px;
     margin: 0 auto;
     text-align: left;
 }
 
-/* --- 4. 卡片設定 (直立、整齊) --- */
+/* --- 卡片設定 --- */
 .card {
     background-color: #FDFBF7;
-    border-radius: 12px; /* 改回原本漂亮的圓角 */
+    border-radius: 12px;
     overflow: hidden;
     
-    /* 讓卡片在瀑布流中不斷裂 */
-    display: inline-block; 
-    width: 100%; 
-    margin-bottom: 20px;
-    break-inside: avoid;
+    /* ✨ 關鍵修改：讓 Grid 決定寬度，這裡不用設 width */
+    display: block; 
+    width: auto; 
+    margin-bottom: 0; /* Grid 已經有 gap 了，不需要額外 margin */
     
-    /* 移除歪斜設定，改回乾淨的陰影 */
     box-shadow: 0 4px 15px rgba(60, 40, 20, 0.3);
+    
+    /* 進場動畫 (保留你原本喜歡的彈出效果) */
+    animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) backwards;
     transition: transform 0.2s;
 }
 
-.card:hover { transform: translateY(-5px); }
-
-/* --- 輪播與圖片 --- */
-.slideshow-container {
-    position: relative;
-    width: 100%;
-    background-color: transparent;
-    min-height: 0;
+.card:hover { 
+    transform: translateY(-5px); 
 }
-.slide-img { width: 100%; height: auto; display: none; vertical-align: bottom; }
-.slide-img.active { display: block; }
 
-/* --- 卡片內容 --- */
-.card-content { 
-    padding: 15px; 
-    /* 確保內容也是用可愛字體 */
+.card-content {
+    /* ✨ 關鍵修改：上方 padding 改為 0 */
+    /* 順序是：上(0) 右(15) 下(15) 左(15) */
+    padding: 0 15px 15px 15px;
+    
     font-family: 'Comic Sans MS', '微軟正黑體', sans-serif;
 }
-.nickname { color: #A0522D; font-weight: bold; font-size: 1.1em; margin-bottom: 5px; display: flex; align-items: center; }
+.nickname { 
+    color: #A0522D; 
+    font-weight: bold; 
+    font-size: 1.1em; 
+    
+    /* ✨ 稍微加一點點距離就好 (原本可能是 0) */
+    margin-top: 10px; 
+    
+    margin-bottom: 5px; 
+    display: flex; 
+    align-items: center; 
+}
 .message { color: #5D4037; font-size: 0.95em; margin-bottom: 10px; line-height: 1.4; word-wrap: break-word; }
 .timestamp { color: #8D6E63; font-size: 0.8em; }
 .badge { background-color: #D7CCC8; color: #5D4037; font-size: 0.7em; padding: 2px 8px; border-radius: 10px; margin-left: 8px; border: 1px solid #A1887F; }
 
-/* 固定在右下角的圖片設定 */
-.fixed-mascot {
-    position: fixed;  /* 固定定位 */
-    bottom: 0;        /* 貼齊底部 */
-    right: 0;         /* 貼齊右側 */
-    width: 700px;     /* 電腦版圖片寬度，可依需求調整 */
-    z-index: 1000;    /* 確保圖層在最上面，不會被蓋住 */
-    pointer-events: none; /* 讓點擊穿透圖片（如果你不想讓圖片擋到後面的按鈕就加這行） */
+/* 輪播用 */
+.slideshow-container { position: relative; width: 100%; min-height: 0; }
+.slide-img { width: 100%; height: auto; display: none; vertical-align: bottom; }
+.slide-img.active { display: block; }
+
+
+/* =========================================
+   ✨ 時間軸表格核心 (Timeline) ✨
+   ========================================= */
+
+.timeline-table-container {
+    width: 100%;
+    overflow-x: auto;
+    margin-top: 20px;
+    padding-bottom: 80px;
 }
 
-/* 手機版響應式設定 (螢幕寬度小於 768px 時) */
+.skz-matrix {
+    border-collapse: separate; 
+    border-spacing: 0;
+    margin: 0 auto;
+    min-width: 1100px;
+}
+
+/* --- 表頭 (Sticky Header) --- */
+.skz-matrix th {
+    width: 160px;
+    background-color: #8B4513; 
+    color: #FDFBF7;
+    padding: 15px 5px; 
+    position: sticky; 
+    top: 0; 
+    z-index: 100;
+    border-bottom: 4px solid #5D4037; 
+    width: 180px;
+}
+.skz-matrix th.head-year { position: sticky; left: 0; width: 80px; background-color: #5D4037; z-index: 102; }
+.skz-matrix th.head-album { position: sticky; left: 80px; width: 150px; background-color: #8B4513; z-index: 102; border-right: 2px solid #D7CCC8; }
+
+/* --- 內容欄位設定 --- */
+
+/* 1. 年份欄：透明背景 + 8px 粗直線 */
+.col-year {
+    position: sticky; 
+    left: 0;
+    background-color: transparent !important; /* 強制透明 */
+    z-index: 50; 
+    width: 80px;
+    text-align: right; 
+    vertical-align: top;
+    padding: 20px 10px 0 0;
+    color: #A0522D; 
+    font-weight: bold; 
+    font-size: 1.3em;
+    
+    /* 這裡設定那條貫穿上下的粗線 */
+    border-right: 8px solid #D7CCC8; 
+    border-bottom: none !important;
+    border-top: none !important;
+    
+    /* 確保突出的橋接線不會被裁切 */
+    overflow: visible !important;
+}
+
+/* 年份小圓點 (T字路口連接版) */
+.year-marker {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background: #A0522D; 
+    border-radius: 50%;
+    position: absolute;
+    right: -20px; /* 水平置中於 8px 線上 */
+    top: -6px;    /* 垂直調整 */
+    z-index: 60;
+}
+
+/* 2. 年份放大特效 (JS 控制 active-row) */
+.dynamic-year { 
+    display: inline-block; 
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+    transform-origin: right center; 
+}
+tr.active-row .dynamic-year { 
+    transform: scale(2.0); 
+    color: #FFF; 
+    text-shadow: 0 0 10px #8B4513; 
+}
+
+/* 3. 專輯欄：透明背景 */
+.col-album {
+    position: sticky; 
+    left: 80px;
+    background-color: transparent !important;
+    z-index: 50; 
+    width: 150px;
+    padding: 25px 5px 15px 5px; 
+    text-align: left; 
+    vertical-align: top; 
+    font-weight: bold; 
+    color: #5D4037;
+    border: none !important;
+}
+
+/* 4. 照片格：透明背景 + 背景細線 */
+.photo-cell {
+    position: relative; 
+    padding: 10px 5px;
+    background-color: transparent !important;
+    border: none !important;
+}
+/* 照片背後的細線 (貫穿照片用) */
+.photo-cell::before {
+    content: ''; 
+    position: absolute;
+    top: 0; bottom: 0; left: 50%;
+    width: 4px; 
+    background-color: rgba(215, 204, 200, 0.4);
+    transform: translateX(-50%); 
+    z-index: 0;
+}
+
+/* =========================================
+   🛠️ 分界線樣式 (搭橋修復版)
+   ========================================= */
+
+/* 1. 讓內容往下移，留出空間給橫線 */
+tr.new-year-separator td {
+    padding-top: 45px; 
+}
+
+/* 2. 照片欄：畫出橫線 */
+tr.new-year-separator .photo-cell {
+    border-top: 4px solid #8B4513 !important;
+}
+
+/* 3. 專輯欄：用 ::before 畫橫線 */
+tr.new-year-separator .col-album {
+    padding-top: 25px !important; 
+}
+tr.new-year-separator .col-album::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 4px;
+    background-color: #8B4513; 
+    z-index: 55;
+}
+
+/* 4. ✨ 關鍵修復：年份欄伸出的「橋」 ✨ */
+tr.new-year-separator .col-year::after {
+    content: '';
+    position: absolute;
+    top: 0; right: -10px; /* 跨越縫隙 */
+    width: 30px; height: 4px;
+    background-color: #8B4513;
+    z-index: 55;
+}
+
+/* =========================================
+   📸 照片樣式
+   ========================================= */
+.timeline-img {
+    /* 🔴 關鍵修改：設定固定的寬度與高度，變成正方形框框 */
+    width: 160px;
+    height: 160px;
+    
+    /* 🔴 關鍵修改：讓圖片在框框內「保持比例完整顯示」 */
+    object-fit: contain; 
+    object-position: center; /* 圖片置中 */
+
+    display: block;
+    margin: 0 auto;
+    border-radius: 10px;
+    border: 3px solid #FDFBF7;
+    position: relative;
+    z-index: 1;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    
+    /* 背景色改透明，不然直向照片旁邊會有兩條灰色的 */
+    background-color: transparent; 
+    
+    opacity: 0.8;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s;
+}
+.timeline-img:hover { 
+    transform: scale(1.3); 
+    z-index: 100; 
+    border-color: #A0522D; 
+    cursor: pointer; 
+}
+
+/* =========================================
+   🐶 吉祥物與響應式
+   ========================================= */
+.fixed-mascot {
+    position: fixed; 
+    bottom: 0; right: 0;
+    width: 700px;
+    z-index: 1000;
+    pointer-events: none;
+}
+
 @media (max-width: 768px) {
-    .fixed-mascot {
-        width: 250px; /* 手機版寬度縮小，可依需求調整 */
-    }
+    .fixed-mascot { width: 250px; }
 }

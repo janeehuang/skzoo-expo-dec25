@@ -42,6 +42,81 @@ def index():
     # 3. 把整理好的 grouped_posts 送給網頁
     return render_template('index.html', grouped_posts=grouped_posts)
 
+@app.route('/timeline')
+def timeline():
+    # 定義時間軸資料：依照時間「由舊到新」排列 (升冪)
+    
+    timeline_data = [
+        # 2017 年 (起點)
+        ("2017", [
+            ("《Mixtape》", "Hellevator /《Mixtape》")
+        ]),
+
+        # 2018 年
+        ("2018", [
+            ("District 9", "District 9 /《I am NOT》"),
+            ("I am WHO", "My Pace /《I am WHO》"),
+            ("I am YOU", "I am YOU /《I am YOU》"),
+            # 如果之後要補 I am WHO, I am YOU 可以加在這邊
+        ]),
+
+        # 2019 年
+        ("2019", [
+            # 順序：Miroh (若有) -> Yellow Wood -> Levanter
+            ("《Clé 1 : MIROH》", "MIROH / 《Clé 1 : MIROH》"),
+            ("《Clé 2: Yellow Wood》", "Side Effects / 《Clé 2: Yellow Wood》"),
+            ("《Clé : LEVANTER》", "LEVANTER /《Clé : LEVANTER》"),
+            ("〈Mixtape : Gone Days〉", "Gone Days /〈Mixtape : Gone Days〉")
+
+        ]),
+
+        # 2020 年
+        ("2020", [
+            # 順序：神菜單(6月) -> 後門(9月)
+            ("《GO生》", "God's Menu / 《GO生》"),
+            ("《IN生》", " Back Door /《IN生》")
+        ]),
+        # 2022 年
+        ("2021", [
+            # 順序：Maniac(3月) -> Case 143(10月)
+            ("Mixtape  애", "OH /〈Mixtape  애〉"),
+            ("noeasy", "Thunderous /《NOEASY》"),
+            ("《Christmas EveL》", "Christmas EveL /《Christmas EveL》")
+        ]),
+
+
+        # 2022 年
+        ("2022", [
+            # 順序：Maniac(3月) -> Case 143(10月)
+            ("maniac", "Maniac /《ODDINARY》"),
+            ("case143", "Case 143 /《MAXIDENT》 ")
+        ]),
+        
+        # 2023 年
+        ("2023", [
+            # 順序：特(6月) -> 樂(11月)
+            ("5星", "S-Class /《★★★★★ (5-STAR)》"),
+            ("樂", "樂 (LALALALA) /《樂-STAR》")
+        ]),
+
+        # 2024 年 (最新)
+        ("2024", [
+            # 順序：Lose My Breath(5月) -> ATE(7月)
+            ("Lose My Breath", "Lose My Breath / 《Lose My Breath》"),
+            ("ATE", "Chk Chk Boom /《ATE》"),
+            ("walkin on water", "Walkin On Water /《合（HOP) 》")
+        ]),
+        ("2025", [
+            # 順序：Lose My Breath(5月) -> ATE(7月)
+            ("KARMA", "CEREMONY /《KARMA》"),
+            ("do it", "Do It / 《DO IT》")
+        ])
+    ]
+
+    # 把這些資料傳給網頁
+    return render_template('timeline.html', timeline_data=timeline_data)
+
+
 # 3. API 路由：專門吐資料給前端 (這是 Option B 的精髓)
 # 前端不用自己連資料庫，而是來問這個路徑拿資料
 @app.route('/api/posts')

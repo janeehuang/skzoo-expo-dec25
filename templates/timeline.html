@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stray Kids Chronicle</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <link rel="icon" href="{{ url_for('static', filename='width_600.png') }}" type="image/png">
+</head>
+<body>
+
+    <div style="padding: 20px; max-width: 1200px; margin: 0 auto;">
+        <a href="{{ url_for('index') }}" class="back-btn">⬅️ 返回首頁</a>
+    </div>
+
+    <h1 style="margin-bottom: 5px; text-shadow: 0 2px 4px rgba(0,0,0,0.2);">✨ Stray Kids Chronicle ✨</h1>
+    <p style="text-align: center; color: #5D4037; font-weight: bold; margin-bottom: 20px; font-size: 0.9em;">
+        (請左右滑動查看所有成員，上下滑動瀏覽歷史)
+    </p>
+    
+    <div class="timeline-table-container">
+        <table class="skz-matrix">
+            <thead>
+                <tr>
+                    <th class="head-year">年份</th>
+                    <th class="head-album">主打 / 專輯</th>
+                    <th>方燦</th>
+                    <th>Lee Know</th>
+                    <th>彰彬</th>
+                    <th>鉉辰</th>
+                    <th>HAN</th>
+                    <th>Felix</th>
+                    <th>昇玟</th>
+                    <th>I.N</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for year, albums in timeline_data %}
+                    {% for folder, title in albums %}
+                    
+                    <tr class="timeline-row {% if loop.first %}new-year-separator{% endif %}">
+                        
+                        <td class="col-year">
+                            {% if loop.first %}
+                                <span class="dynamic-year">{{ year }}</span>
+                                <span class="year-marker"></span> 
+                            {% endif %}
+                        </td>
+
+                        <td class="col-album">
+                            {{ title }}
+                        </td>
+
+                        {% for i in range(1, 9) %}
+                        <td class="photo-cell">
+                            <img src="{{ url_for('static', filename='history/' + folder + '/' + i|string + '.jpg') }}" 
+                                 class="timeline-img" 
+                                 alt="{{ i }}"
+                                 onerror="this.src='https://placehold.co/120x150/D7CCC8/5D4037?text=No+Img'">
+                        </td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+</html>

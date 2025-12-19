@@ -12,9 +12,15 @@
 <body>
     <h1>#本命は小動物です 展覽應援動態留言牆</h1>
 
-    <a href="https://forms.gle/yindWrvbkR5AJw1i8" target="_blank" class="survey-btn">
-        📝 填寫展覽應援問卷
-    </a>
+    <div class="button-group">
+        <a href="https://forms.gle/yindWrvbkR5AJw1i8" target="_blank" class="btn survey-btn">
+            📝 填寫展覽應援問卷
+        </a>
+
+        <a href="/timeline" class="btn timeline-btn">
+            Stray Kids TimeLine
+        </a>
+    </div>
 
     <div class="gallery">
         {% for nickname, user_posts in grouped_posts.items() %}
@@ -39,8 +45,6 @@
         </div>
         {% endfor %}
     </div>
-
-    <img src="{{ url_for('static', filename='skzoo.png') }}" class="fixed-mascot" alt="Footer Decoration">
 
     <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
