@@ -132,3 +132,20 @@ h1 {
 .message { color: #5D4037; font-size: 0.95em; margin-bottom: 10px; line-height: 1.4; word-wrap: break-word; }
 .timestamp { color: #8D6E63; font-size: 0.8em; }
 .badge { background-color: #D7CCC8; color: #5D4037; font-size: 0.7em; padding: 2px 8px; border-radius: 10px; margin-left: 8px; border: 1px solid #A1887F; }
+
+/* 固定在右下角的圖片設定 */
+.fixed-mascot {
+    position: fixed;  /* 固定定位 */
+    bottom: 0;        /* 貼齊底部 */
+    right: 0;         /* 貼齊右側 */
+    width: 300px;     /* 電腦版圖片寬度，可依需求調整 */
+    z-index: 1000;    /* 確保圖層在最上面，不會被蓋住 */
+    pointer-events: none; /* 讓點擊穿透圖片（如果你不想讓圖片擋到後面的按鈕就加這行） */
+}
+
+/* 手機版響應式設定 (螢幕寬度小於 768px 時) */
+@media (max-width: 768px) {
+    .fixed-mascot {
+        width: 150px; /* 手機版寬度縮小，可依需求調整 */
+    }
+}
