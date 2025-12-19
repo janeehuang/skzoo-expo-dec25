@@ -64,7 +64,7 @@ def timeline():
         ("2019", [
             # 順序：Miroh (若有) -> Yellow Wood -> Levanter
             ("《Clé 1 : MIROH》", "MIROH / 《Clé 1 : MIROH》"),
-            ("《Clé 2: Yellow Wood》", "Side Effects / 《Clé 2: Yellow Wood》"),
+            ("《Clé 2: Yellow Wood》", "Double Knot / 《Clé 2: Yellow Wood》"),
             ("《Clé : LEVANTER》", "LEVANTER /《Clé : LEVANTER》"),
             ("〈Mixtape : Gone Days〉", "Gone Days /〈Mixtape : Gone Days〉")
 
